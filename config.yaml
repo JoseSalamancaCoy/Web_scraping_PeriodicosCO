@@ -4,15 +4,24 @@ news_sites:
     queries:
       typelink: 'a'
       homepage_article_links : 'page-link'
+      article_body: 'contenido'
+      article_title: 'titulo'
+      article_datepubli: '.fecha'
 
   elespectador:
     ur: https://www.elespectador.com
     queries:
       typelink: 'a'
       homepage_article_links : ''
+      article_body: ''
+      article_title: ''
+      article_datepubli: ''
 
   vanguardialiberal:
     url: https://www.vanguardia.com
     queries:
       typelink: 'a'
       homepage_article_links : ''
+      article_body: ''
+      article_title: ''
+      article_datepubli: ''
