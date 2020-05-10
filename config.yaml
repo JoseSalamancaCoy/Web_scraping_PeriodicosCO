@@ -1,7 +1,18 @@
 news_sites:
   eltiempo:
-    url: https://eltiempo.com
+    url: https://www.eltiempo.com    
+    queries:
+      typelink: 'a'
+      homepage_article_links : 'page-link'
+
   elespectador:
-    ur: https://elespectador.com
+    ur: https://www.elespectador.com
+    queries:
+      typelink: 'a'
+      homepage_article_links : ''
+
   vanguardialiberal:
-    url: https://vanguardia.com
+    url: https://www.vanguardia.com
+    queries:
+      typelink: 'a'
+      homepage_article_links : ''
