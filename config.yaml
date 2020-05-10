@@ -1,0 +1,7 @@
+news_sites:
+  eltiempo:
+    url: https://eltiempo.com
+  elespectador:
+    ur: https://elespectador.com
+  vanguardialiberal:
+    url: https://vanguardia.com
