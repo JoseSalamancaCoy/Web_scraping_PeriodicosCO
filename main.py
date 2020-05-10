@@ -27,7 +27,6 @@ def _news_scraper(news_site_uid):
         if article:
             logger.info("Articulo Valido")
             articles.append(article)
-            break
     _save_articles(news_site_uid,articles)
 
 def _save_articles(news_site_uid,articles):
@@ -36,7 +35,7 @@ def _save_articles(news_site_uid,articles):
     csv_headers = list(filter(lambda property: not property.startswith('_'),dir(articles[0])))
     #Se le pasa las posibles ejecuciones de la funcion arg (article)
     with open(out_file_name, mode = 'w+') as f:
-        writer = csv.writer(f,delimiter='*')
+        writer = csv.writer(f,delimiter='¬')
         writer.writerow(csv_headers)
         for article in articles:
             row = [str(getattr(article,prop)) for prop in csv_headers]
