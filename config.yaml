@@ -1,27 +1,50 @@
 news_sites:
   eltiempo:
     url: https://www.eltiempo.com    
-    queries:
-      typelink: 'a'
-      homepage_article_links : 'page-link'
-      article_body: 'contenido'
-      article_title: 'titulo'
-      article_datepubli: '.fecha'
+    queries:      
+      homepage_article_links : 
+        selector: 'page-link'
+        type: 'a'
+      article_body: 
+        selector: 'contenido'
+        type: 'p'
+      article_title: 
+        selector: 'titulo'
+        type: 'h1'
+      article_datepubli: 
+        selector: '.fecha'
+        type:
 
   elespectador:
-    ur: https://www.elespectador.com
+    url: https://www.elespectador.com
     queries:
-      typelink: 'a'
-      homepage_article_links : ''
-      article_body: ''
-      article_title: ''
-      article_datepubli: ''
+      typelink: 
+      homepage_article_links : 
+        selector: ".node-title a"
+        type: 
+      article_body: 
+        selector: '.node-body p'
+        type: 
+      article_title: 
+        selector: '.node-title h1'
+        type: 
+      article_datepubli: 
+        selector: '.node-post-date'
+        type: 
 
   vanguardialiberal:
     url: https://www.vanguardia.com
     queries:
-      typelink: 'a'
-      homepage_article_links : ''
-      article_body: ''
-      article_title: ''
-      article_datepubli: ''
+      homepage_article_links : 
+        selector: ''
+        type: 'a'
+      article_body: 
+        selector: '.paragraph p'
+        type: 
+      article_title: 
+        selector: 'h1 .priority-content'
+        type: 
+      article_datepubli: 
+        selector: '.date'
+        type: 
+

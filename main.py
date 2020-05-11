@@ -34,7 +34,7 @@ def _save_articles(news_site_uid,articles):
     out_file_name = '{}_{}_articles.csv'.format(news_site_uid,now)
     csv_headers = list(filter(lambda property: not property.startswith('_'),dir(articles[0])))
     #Se le pasa las posibles ejecuciones de la funcion arg (article)
-    with open(out_file_name, mode = 'w+') as f:
+    with open(out_file_name, mode = 'w+', encoding="utf-8") as f:
         writer = csv.writer(f,delimiter='¬')
         writer.writerow(csv_headers)
         for article in articles:

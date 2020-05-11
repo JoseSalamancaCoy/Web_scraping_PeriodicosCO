@@ -1,8 +1,6 @@
 import requests
 import bs4
 from common import config
-from multipledispatch import dispatch #Multiples Definiciones
-from functools import singledispatch
 
 class NewsPage: #Obtiene html de pagina
     def __init__(self,news_site_uid,url):
@@ -29,8 +27,9 @@ class HomePage(NewsPage): #Para Obtener links de Page (Extencion de NewPage)
 
     @property
     def article_links(self):
+        article_link = self._queries['homepage_article_links']
         link_list = []
-        for link in self._select(self._queries['homepage_article_links'], self._queries['typelink']):
+        for link in self._select(article_link['selector'], article_link['type']):
             if(link and link.has_attr('href')):
                 link_list.append(link)
         return set(link['href'] for link in link_list)
@@ -41,7 +40,8 @@ class ArticlePage(NewsPage): #Para Extraer informacion de Page (Extencion de New
 
     @property
     def body(self):
-        result = self._select( self._queries['article_body'],"p" )
+        article_body = self._queries['article_body']
+        result = self._select( article_body['selector'],article_body['type'] )
         if len(result):
             text = []
             for parrafo in result:
@@ -52,12 +52,16 @@ class ArticlePage(NewsPage): #Para Extraer informacion de Page (Extencion de New
 
     @property
     def title(self):
-        result = self._select(self._queries['article_title'],'h1')
+        article_title = self._queries['article_title']
+
+        result = self._select(article_title['selector'],article_title['type'])
         return result[0].text if(len(result)) else ''
 
     @property
-    def fecha(self):
-        result = self._select(self._queries['article_datepubli'])
+    def time(self):
+        article_time = self._queries['article_datepubli']
+
+        result = self._select(article_time['selector'],article_time['type'])
         return result[0].text.replace('\n','') if(len(result)) else ''
         
     #@property
