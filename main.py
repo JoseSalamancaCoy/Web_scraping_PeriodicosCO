@@ -4,7 +4,7 @@ import csv
 import logging #Imprimir informacion al Usuario
 import re
 
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError,TooManyRedirects
 from urllib3.exceptions import MaxRetryError
 logging.basicConfig(level=logging.INFO) #Nivel de informacion
 import news_page_object as news
@@ -23,7 +23,6 @@ def _news_scraper(news_site_uid):
     articles = []
     for link in homepage.article_links:
         article = _fetch_article(news_site_uid,host,link)
-
         if article:
             logger.info("Articulo Valido")
             articles.append(article)
@@ -46,7 +45,7 @@ def _fetch_article(news_site_uid,host,link):
     article = None
     try:
         article = news.ArticlePage(news_site_uid,_build_link(host,link))
-    except (HTTPError, MaxRetryError) as e:
+    except (HTTPError, MaxRetryError,TooManyRedirects) as e:
         logger.warning('Error cuando check el articulo', exc_info= False)
 
     if(article) and not article.body:
