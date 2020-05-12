@@ -1,6 +1,8 @@
 import requests
 import bs4
 from common import config
+import locale
+from datetime import datetime
 
 class NewsPage: #Obtiene html de pagina
     def __init__(self,news_site_uid,url):
@@ -9,6 +11,7 @@ class NewsPage: #Obtiene html de pagina
         self._html = None
         self.url = url
         self._visit(url)
+
 
     def _select(self, query_string, type_link = None):
         if not type_link:
@@ -37,6 +40,24 @@ class HomePage(NewsPage): #Para Obtener links de Page (Extencion de NewPage)
 class ArticlePage(NewsPage): #Para Extraer informacion de Page (Extencion de NewPage)
     def __init__(self,news_site_uid,url):
         super().__init__(news_site_uid,url)
+        self.Time_publish = datetime
+        #self.get_time()
+
+    def get_time(self):
+        article_time = self._queries['article_datepubli']
+        if article_time['locale']:
+            locale.setlocale(locale.LC_ALL, article_time[locale]) 
+
+        result = self._select(article_time['selector'],article_time['type'])
+        if(len(result)):
+
+            if article_time['locale']:
+                time_str_ = result[0].text.strip().strip().replace("am",'a. m.').replace('a.m.', 'a. m.').replace("AM", 'a. m.').replace("pm",'p. m.').replace('p.m.',  'p. m.').replace("PM", 'p. m.')
+            else:
+                time_str_ = result[0].text.strip().strip()
+            self.Time_publish = datetime.strptime(time_str_, article_time["form"])
+        else:
+            self.Time_publish = datetime(1960)
 
     @property
     def body(self):
@@ -46,6 +67,8 @@ class ArticlePage(NewsPage): #Para Extraer informacion de Page (Extencion de New
             text = []
             for parrafo in result:
                 text.append(parrafo.get_text())
+            self.get_time() #Si puede obtener el cuerpo de la noticia entonces obtiene la fecha de publicacion
+
             return text
         else:
             return ''
@@ -59,11 +82,5 @@ class ArticlePage(NewsPage): #Para Extraer informacion de Page (Extencion de New
 
     @property
     def time(self):
-        article_time = self._queries['article_datepubli']
+        return self.Time_publish.strftime("%Y_%m_%dT%H_%M_00")
 
-        result = self._select(article_time['selector'],article_time['type'])
-        return result[0].text.replace('\n','') if(len(result)) else ''
-        
-    #@property
-    #def link(self):
-    #    return self.url

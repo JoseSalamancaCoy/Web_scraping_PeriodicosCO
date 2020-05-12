@@ -26,11 +26,12 @@ def _news_scraper(news_site_uid):
         if article:
             logger.info("Articulo Valido")
             articles.append(article)
+            break
     _save_articles(news_site_uid,articles)
 
 def _save_articles(news_site_uid,articles):
     now = datetime.now().strftime('%Y_%m_%d')
-    out_file_name = '{}_{}_articles.csv'.format(news_site_uid,now)
+    out_file_name = '../DataSet/{}_{}_articles.csv'.format(news_site_uid,now)
     csv_headers = list(filter(lambda property: not property.startswith('_'),dir(articles[0])))
     #Se le pasa las posibles ejecuciones de la funcion arg (article)
     with open(out_file_name, mode = 'w+', encoding="utf-8") as f:
@@ -39,6 +40,7 @@ def _save_articles(news_site_uid,articles):
         for article in articles:
             row = [str(getattr(article,prop)) for prop in csv_headers]
             writer.writerow(row)
+
 def _fetch_article(news_site_uid,host,link):
     logger.info('Revisando {}'.format(link))
 
@@ -53,6 +55,7 @@ def _fetch_article(news_site_uid,host,link):
         return None
     
     return article
+
 def _build_link(host,link):
     if is_well_formed_link.match(link):
         return link

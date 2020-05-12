@@ -14,6 +14,8 @@ news_sites:
       article_datepubli: 
         selector: '.fecha'
         type:
+        form: "%d de %B %Y , %I:%M %p"
+        locale: 'es-CO.UTF-8'
 
   elespectador:
     url: https://www.elespectador.com
@@ -31,6 +33,8 @@ news_sites:
       article_datepubli: 
         selector: '.node-post-date'
         type: 
+        form: "%d %b %Y - %I:%M %p"
+        locale: 
 
   vanguardialiberal:
     url: https://www.vanguardia.com
@@ -47,4 +51,6 @@ news_sites:
       article_datepubli: 
         selector: '.date'
         type: 
+        form: "%A	%d de %B de %Y - %I:%M %p"
+        locale: 'es-CO.UTF-8'
 
