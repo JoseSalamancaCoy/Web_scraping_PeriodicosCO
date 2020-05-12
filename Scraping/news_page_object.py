@@ -40,13 +40,13 @@ class HomePage(NewsPage): #Para Obtener links de Page (Extencion de NewPage)
 class ArticlePage(NewsPage): #Para Extraer informacion de Page (Extencion de NewPage)
     def __init__(self,news_site_uid,url):
         super().__init__(news_site_uid,url)
-        self.Time_publish = datetime
+        self.Time_publish = datetime(1960, 5, 1)
         #self.get_time()
 
     def get_time(self):
         article_time = self._queries['article_datepubli']
         if article_time['locale']:
-            locale.setlocale(locale.LC_ALL, article_time[locale]) 
+            locale.setlocale(locale.LC_ALL, article_time['locale']) 
 
         result = self._select(article_time['selector'],article_time['type'])
         if(len(result)):
