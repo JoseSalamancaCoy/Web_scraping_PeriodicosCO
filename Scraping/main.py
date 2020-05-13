@@ -31,7 +31,10 @@ def _news_scraper(news_site_uid, Time):
             logging.info('***************************************************************\n\n\n\n\n\n\n\n\n')
             logging.info('Faltan {} paginas por scrapear'.format( len(links[ links.getlinks == False ])) )
             logging.info('IniciandoScraper para {}'.format(link_scraper))
-            homepage = news.HomePage(news_site_uid,link_scraper) #Inicializa pagina principal
+            try:
+                homepage = news.HomePage(news_site_uid,link_scraper) #Inicializa pagina principal
+            except (HTTPError, MaxRetryError,TooManyRedirects) as e:
+                logger.warning('Error en HomePage', exc_info= False)
 
 
             for link in homepage.article_links: #Obtiene y recorre links
@@ -43,7 +46,10 @@ def _news_scraper(news_site_uid, Time):
                 if links.getCont[links.url == url].bool(): #Si ya obtuvo el contenido entonces article =None
                     article = None
                 else:
-                    article = _fetch_article(news_site_uid,host,link,_time) #Valida el nuevo articulo en base al contenido y la fecha de publicacion
+                    try:
+                        article = _fetch_article(news_site_uid,host,link,_time) #Valida el nuevo articulo en base al contenido y la fecha de publicacion
+                    except ValueError as e:
+                        logger.warning("Valor invalido")
                     links.getCont[links.url == url] = True
 
 
