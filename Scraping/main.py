@@ -29,26 +29,30 @@ def _news_scraper(news_site_uid, Time):
     while not links.getlinks.all(): #Verifica si hay paginas por obtener links
         for link_scraper in links[ links.getlinks == False ]["url"]:
             logging.info('***************************************************************\n\n\n\n\n\n\n\n\n')
+            logging.info('Faltan {} paginas por scrapear'.format( len(links[ links.getlinks == False ])) )
             logging.info('IniciandoScraper para {}'.format(link_scraper))
             homepage = news.HomePage(news_site_uid,link_scraper) #Inicializa pagina principal
 
 
             for link in homepage.article_links: #Obtiene y recorre links
-                article = _fetch_article(news_site_uid,host,link,_time) #Valida el nuevo articulo en base al contenido y la fecha de publicacion
-                
                 url= _build_link(host,link)
                 if len(links[links.url == url]): #Si ya existe no agrega link a tabla
                     pass
-                else:
-                    
+                else:                    
                     links.loc[len(links)] = [False,Check_host(host,url), False, url]
+                if links.getCont[links.url == url].bool(): #Si ya obtuvo el contenido entonces article =None
+                    article = None
+                else:
+                    article = _fetch_article(news_site_uid,host,link,_time) #Valida el nuevo articulo en base al contenido y la fecha de publicacion
+                    links.getCont[links.url == url] = True
+
+
 
                 if article:
                     logger.info("Articulo Valido")
                     articles.append(article)
                     
-                    links.getCont[links.url == link_scraper] = True
-                    break
+                    #break
 
             links.getlinks[links.url == link_scraper] = True
     Save_links(news_site_uid,links)
@@ -61,7 +65,7 @@ def Check_host(host,url):
         return False
 def Save_links(news_site_uid,links):
     out_file_name = '../DataSet/{}_links.csv'.format(news_site_uid)
-    links.to_csv(out_file_name)
+    links.to_csv(out_file_name,mode = 'w+')
 def _save_articles(news_site_uid,articles):
     now = datetime.now().strftime('%Y_%m_%d')
     out_file_name = '../DataSet/{}_{}_articles.csv'.format(news_site_uid,now)
