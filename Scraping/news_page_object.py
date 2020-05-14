@@ -47,14 +47,13 @@ class ArticlePage(NewsPage): #Para Extraer informacion de Page (Extencion de New
         article_time = self._queries['article_datepubli']
         if article_time['locale']:
             locale.setlocale(locale.LC_ALL, article_time['locale']) 
-
         result = self._select(article_time['selector'],article_time['type'])
         if(len(result)):
 
             if article_time['locale']:
-                time_str_ = result[0].text.strip().strip().replace("am",'a. m.').replace('a.m.', 'a. m.').replace("AM", 'a. m.').replace("pm",'p. m.').replace('p.m.',  'p. m.').replace("PM", 'p. m.')
+                time_str_ = result[0].text.strip().lower().replace("am",'a. m.').replace('a.m.', 'a. m.').replace("AM", 'a. m.').replace("pm",'p. m.').replace('p.m.',  'p. m.').replace("PM", 'p. m.')
             else:
-                time_str_ = result[0].text.strip().strip()
+                time_str_ = result[0].text.strip().lower()
             self.Time_publish = datetime.strptime(time_str_, article_time["form"])
         else:
             self.Time_publish = datetime(1960)

@@ -1,9 +1,10 @@
 news_sites:
   eltiempo:
-    url: https://www.eltiempo.com    
+    host: https://www.eltiempo.com 
+    init: https://www.eltiempo.com  
     queries:      
       homepage_article_links : 
-        selector: 'page-link'
+        selector: #'page-link'
         type: 'a'
       article_body: 
         selector: 'contenido'
@@ -15,15 +16,18 @@ news_sites:
         selector: '.fecha'
         type:
         form: "%d de %B %Y , %I:%M %p"
-        locale: 'es-CO.UTF-8'
+        locale: 'es_CO.UTF-8'
+        rest: 0
+
 
   elespectador:
-    url: https://www.elespectador.com
+    host: https://www.elespectador.com
+    init: https://www.elespectador.com/search/tags
     queries:
       typelink: 
       homepage_article_links : 
-        selector: ".node-title a"
-        type: 
+        selector: #".node-title a"
+        type: "a"
       article_body: 
         selector: '.node-body p'
         type: 
@@ -33,11 +37,13 @@ news_sites:
       article_datepubli: 
         selector: '.node-post-date'
         type: 
-        form: "%d %b %Y - %I:%M %p"
-        locale: 
+        form: "%d %b %Y - %I:%M "
+        locale: 'es_US.UTF-8'
+        rest: -3
 
   vanguardialiberal:
-    url: https://www.vanguardia.com
+    host: https://www.vanguardia.com
+    init: https://www.vanguardia.com 
     queries:
       homepage_article_links : 
         selector: ''
@@ -52,5 +58,5 @@ news_sites:
         selector: '.date'
         type: 
         form: "%A	%d de %B de %Y - %I:%M %p"
-        locale: 'es-CO.UTF-8'
+        locale: 'es_CO.UTF-8'
 

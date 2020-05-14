@@ -6,7 +6,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from requests.exceptions import HTTPError,TooManyRedirects
+from requests.exceptions import HTTPError, TooManyRedirects, SSLError
 from urllib3.exceptions import MaxRetryError
 logging.basicConfig(level=logging.INFO) #Nivel de informacion
 import news_page_object as news
@@ -18,7 +18,7 @@ is_well_formed_link = re.compile(r'^https?://.+/.+$') #http://Periodico.com/loqu
 is_root_path = re.compile(r'^/.+$') # /Loquesea
 
 def _news_scraper(news_site_uid, Time):
-    host = config()['news_sites'][news_site_uid]['url'] #Se obtiene la URL del sitio WEB solitado
+    host = config()['news_sites'][news_site_uid]['host'] #Se obtiene la URL del sitio WEB solitado
     _time = datetime.strptime(Time,"%Y/%m/%d")
     
     articles = []
@@ -48,19 +48,17 @@ def _news_scraper(news_site_uid, Time):
                 else:
                     try:
                         article = _fetch_article(news_site_uid,host,link,_time) #Valida el nuevo articulo en base al contenido y la fecha de publicacion
-                    except ValueError as e:
+                    except (ValueError,SSLError) as e:
                         logger.warning("Valor invalido")
                     links.getCont[links.url == url] = True
 
-
-
                 if article:
                     logger.info("Articulo Valido")
-                    articles.append(article)
-                    
+                    articles.append(article)                    
                     #break
 
             links.getlinks[links.url == link_scraper] = True
+    logger.info("Fin de Scraping")
     Save_links(news_site_uid,links)
     _save_articles(news_site_uid,articles)
 
